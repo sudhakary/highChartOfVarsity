@@ -1,0 +1,34 @@
+<div class="row">
+<div class="col-sm-4" style="padding-left: 134px;">
+   <div class="col">
+      <div class="btn-group">
+         <button type="button" class="btn btn-default" ng-click="changeValue(active, dateObj,'prev');">Previous </button>
+         <button type="button" class="btn btn-default" ng-click="changeValue(active, dateObj,'next');">Next</button>
+      </div>
+   </div>
+   <div class="col">
+      <h4>{{displayValue}}</h4>
+   </div>
+   <div class="col">
+      <div class="btn-group">
+          <button type="button" class="btn btn-default" ng-class="{'btn-primary': active=='DAY'}" ng-click="setActiveType('DAY', dateObj)">Day</button>
+          <button type="button" class="btn btn-default" ng-class="{'btn-primary': active=='WEEK'}" ng-click="setActiveType('WEEK', dateObj)">Week</button>
+          <button type="button" class="btn btn-default" ng-class="{'btn-primary': active=='MONTH'}" ng-click="setActiveType('MONTH', dateObj)">Month</button>
+          <button type="button" class="btn btn-default" ng-class="{'btn-primary': active=='YEAR'}" ng-click="setActiveType('YEAR', dateObj)">Year</button>
+      </div>
+    </div>
+ </div>
+ <div class="col-sm-4">
+    <label  class="active">Select Subject</label>
+    <select name="month" style="width: 172px;" class="form-control"  id="select" ng-model=" selectedSubject" 
+      ng-options="item for item in subjects" ng-change="getSubjectDetails(selectedSubject)">
+      <option value="" disabled selected>Choose your option</option>
+      </select>
+  </div>
+<div class="col-sm-4">
+      <label for="email">Select Campus:</label>
+     <select name="multipleSelect" style="width: 142px;" id="multipleSelect" ng-model=" selectedCampus" multiple
+      ng-options="item for item in campusNames" ng-change="getStudentDetails(selectedCampus)"></select>
+    </div>
+    </div>
+<div id="container" style="min-width: 310px; height: 400px; margin: 0 auto" ng-show="disableStdChart"></div>
