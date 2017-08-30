@@ -1,195 +1,137 @@
 app.controller('rolesController', function($scope, $filter,$rootScope) {
     $scope.headingTitle = "Roles List";
-    $scope.campusNames = ["Campus1","Campus2","Campus3","Campus4"];
+    $scope.campusNames = ["Campus1","Campus2","Campus3"];
     $scope.subjects = ["Maths","Physics","Chemistry"];
+    $scope.disableStdChart = false;
+    $scope.enableDateChart = false;
+    $scope.tempDateArray = [];
     $scope.avgOfCampus1 = 70;
     $scope.avgOfCampus2 = 80;
     $scope.avgOfCampus3 = 90;
+    $scope.campusesArray = [];
     $scope.chartArry = [];
     $scope.drillData = [];
-    $scope.mathsDrillData = [{
-    	    name: 'campus1',
-    	    id: 'Maths',
-    	    data: [
-    	        [
-    	            'campus1',
-    	            80
-    	        ],
-    	        [
-    	            'campus2',
-    	            70
-    	        ],
-    	        [
-    	            'campus3',
-    	            60
-    	        ]
-    	    ]
-    	}
-    	
-     ];
+					    $scope.mathsDrillData = [ {
+						name : 'campus1',
+						id : 'Maths',
+						data : [ { name:'campus1', y:80, color:'#4682B4' }, { name:'campus2', y:85, color:'#CD5C5C'},
+							{ name:'campus3', y:70, color:'#20B2AA'}]
+					}
+
+					];
     
-    $scope.physicsDrillData = [{
-	    name: 'campus1',
-	    id: 'Physics',
-	    data: [
-	        [
-	            'campus1',
-	            80
-	        ],
-	        [
-	            'campus2',
-	            70
-	        ],
-	        [
-	            'campus3',
-	            60
-	        ]
-	    ]
-	}
-	
-	];
+
+					    $scope.physicsDrillData = [ {
+						name : 'campus1',
+						id : 'Physics',
+						data : [ { name:'campus1', y:72, color:'#00008B' }, { name:'campus2', y:85, color:'#CD5C5C'},
+							{ name:'campus3', y:70, color:'#20B2AA'}]
+					}
+
+					];
     
-    $scope.chemistryDrillData = [{
-	    name: 'campus1',
-	    id: 'Chemistry',
-	    data: [
-	        [
-	            'campus1',
-	            80
-	        ],
-	        [
-	            'campus2',
-	            70
-	        ],
-	        [
-	            'campus3',
-	            60
-	        ]
-	    ]
-	}
-	
-	    ];
+
+					    $scope.chemistryDrillData = [ {
+						name : 'campus1',
+						id : 'Chemistry',
+						data : [ { name:'campus1', y:85, color:'#006400' }, { name:'campus2', y:78, color:'#BDB76B'},
+							{ name:'campus3', y:90, color:'#556B2F'}]
+					}
+
+					];
     	
     
-    $scope.campusDrillData = [{
-    	    name: 'campus1',
-    	    id: 'campus1',
-    	    data: [
-    	        [
-    	            'Maths',
-    	            80
-    	        ],
-    	        [
-    	            'Physics',
-    	            70
-    	        ],
-    	        [
-    	            'Chemistry',
-    	            60
-    	        ]
-    	    ]
-    	},
-    	{
-    	    name: 'campus2',
-    	    id: 'campus2',
-    	    data: [
-    	        [
-    	            'Maths',
-    	            95
-    	        ],
-    	        [
-    	            'Physics',
-    	            89
-    	        ],
-    	        [
-    	            'Chemistry',
-    	            50
-    	        ]
-    	    ]
-    	},
-    	{
-    	    name: 'campus3',
-    	    id: 'campus3',
-    	    data: [
-    	        [
-    	            'Maths',
-    	            98
-    	        ],
-    	        [
-    	            'Physics',
-    	            77
-    	        ],
-    	        [
-    	            'Chemistry',
-    	            66
-    	        ]
-    	    ]
-    	}];
-    $scope.disableStdChart = false;
+
+					    $scope.campusDrillData = [
+							{
+								name : 'campus1',
+								id : 'campus1',
+								data : [ { name:'Maths', y:80, color:'#4682B4' }, { name:'Physics', y:85, color:'#CD5C5C'},
+									{ name:'Chemistry', y:70, color:'#20B2AA'}]
+							},
+							{
+								name : 'campus2',
+								id : 'campus2',
+								data : [ { name:'Maths', y:67, color:'#00008B' }, { name:'Physics', y:85, color:'#008B8B'},
+									{ name:'Chemistry', y:70, color:'#B8860B'}]
+							},
+							{
+								name : 'campus3',
+								id : 'campus3',
+								data : [ { name:'Maths', y:80, color:'#8FBC8F' }, { name:'Physics', y:70, color:'#BDB76B'},
+									{ name:'Chemistry', y:60, color:'#556B2F'}]
+							} ];
     
-    $scope.avgOfMaths = [{
-      	 name: 'Maths',
-      	colorByPoint: true,
-          data: [{
-              name: 'Maths',
-              y: 92,
-              drilldown: 'Maths'
-          }
-         
-          ]
-      }];
+
+					    $scope.avgOfMaths = [ {
+						name : 'Maths',
+						colorByPoint : true,
+						data : [ {
+							name : 'Maths',
+							color: '#D2691E',
+							y : 92,
+							drilldown : 'Maths'
+						}
+
+						]
+					} ];
     
-    $scope.avgOfPhysics = [{
-     	 name: 'Physics',
-     	colorByPoint: true,
-         data: [{
-             name: 'Physics',
-             y: 78,
-             drilldown: 'Physics'
-         }
-        
-         ]
-     }];
+
+					    $scope.avgOfPhysics = [ {
+						name : 'Physics',
+						colorByPoint : true,
+						data : [ {
+							name : 'Physics',
+							color: '#008B8B',
+							y : 78,
+							drilldown : 'Physics'
+						}
+
+						]
+					} ];
     
-    $scope.avgOfChemistry = [{
-    	 name: 'Chemistry',
-    	colorByPoint: true,
-        data: [{
-            name: 'Chemistry',
-            y: 86,
-            drilldown: 'Chemistry'
-        }
-       
-        ]
-    }];
+
+					    $scope.avgOfChemistry = [ {
+						name : 'Chemistry',
+						colorByPoint : true,
+						data : [ {
+							name : 'Chemistry',
+							color: '#B8860B',
+							y : 86,
+							drilldown : 'Chemistry'
+						}
+
+						]
+					} ];
     
-    $scope.campusOneData1 = [{
-    	 name: 'campus1',
-    	colorByPoint: true,
-        data: [{
-            name: 'campus1',
-            y: $scope.avgOfCampus1,
-            drilldown: 'campus1'
-        }
-       
-        ]
-    }];
+
+					    $scope.campusOneData1 = [ {
+						name : 'campus1',
+						colorByPoint : true,
+						data : [ {
+							name : 'campus1',
+							y : $scope.avgOfCampus1,
+							drilldown : 'campus1'
+						}
+
+						]
+					} ];
     
-    $scope.campusOneData2 = [{
-    	 name: 'campus2',
-    	colorByPoint: true,
-        data: [{
-            name: 'campus1',
-            y: $scope.avgOfCampus1,
-            drilldown: 'campus1'
-        },
-        {
-            name: 'campus2',
-            y: $scope.avgOfCampus2,
-            drilldown: 'campus2'
-        }
-        ]
-    }];
+
+					    $scope.campusOneData2 = [ {
+						name : 'campus2',
+						colorByPoint : true,
+						data : [ {
+							name : 'campus1',
+							y : $scope.avgOfCampus1,
+							drilldown : 'campus1'
+						}, {
+							name : 'campus2',
+							color: '#008B8B',
+							y : $scope.avgOfCampus2,
+							drilldown : 'campus2'
+						} ]
+					} ];
     
     $scope.campusOneData3 = [{
     	 name: 'campus3',
@@ -201,16 +143,116 @@ app.controller('rolesController', function($scope, $filter,$rootScope) {
         },
         {
             name: 'campus2',
+            color: '#008B8B',
             y: $scope.avgOfCampus2,
             drilldown: 'campus2'
         },
         {
             name: 'campus3',
+            color: '#FF7F50',
             y: $scope.avgOfCampus3,
             drilldown: 'campus3'
         }
         ]
     }];
+    
+    $scope.selectedDate = [{
+   	 name: 'Date',
+   	colorByPoint: true,
+       data: [{
+           name: 'campus1',
+           color: '#BDB76B',
+           y: 67,
+           drilldown: 'campus1'
+       },
+       {
+           name: 'campus2',
+           color: '#008B8B',
+           y: 86,
+           drilldown: 'campus2'
+       },
+       {
+           name: 'campus3',
+           color: '#FF7F50',
+           y: 77,
+           drilldown: 'campus3'
+       }
+       ]
+   }];
+    
+    $scope.selectedWeek = [{
+      	 name: 'Week',
+      	colorByPoint: true,
+          data: [{
+              name: 'campus1',
+              color: '#FF7F50',
+              y: 60,
+              drilldown: 'campus1'
+          },
+          {
+              name: 'campus2',
+              color: '#008B8B',
+              y: 70,
+              drilldown: 'campus2'
+          },
+          {
+              name: 'campus3',
+              color: '#8FBC8F',
+              y: 50,
+              drilldown: 'campus3'
+          }
+          ]
+      }];
+    
+    $scope.selectedMonth = [{
+      	 name: 'Month',
+      	colorByPoint: true,
+          data: [{
+              name: 'campus1',
+              color: '#BDB76B',
+              y: 77,
+              drilldown: 'campus1'
+          },
+          {
+              name: 'campus2',
+              color: '#008B8B',
+              y: 67,
+              drilldown: 'campus2'
+          },
+          {
+              name: 'campus3',
+              color: '#FF7F50',
+              y: 80,
+              drilldown: 'campus3'
+          }
+          ]
+      }];
+    
+    $scope.selectedYear = [{
+      	 name: 'Year',
+      	colorByPoint: true,
+          data: [{
+              name: 'campus1',
+              color: '#BDB76B',
+              y: 55,
+              drilldown: 'campus1'
+          },
+          {
+              name: 'campus2',
+              color: '#008B8B',
+              y: 70,
+              drilldown: 'campus2'
+          },
+          {
+              name: 'campus3',
+              color: '#FF7F50',
+              y: 66,
+              drilldown: 'campus3'
+          }
+          ]
+      }];
+    
+    
     
     $scope.getSubjectDetails = function(selectedSubject){
     	$scope.disableStdChart = true;
@@ -235,6 +277,9 @@ app.controller('rolesController', function($scope, $filter,$rootScope) {
     
     $scope.getStudentDetails = function(selectedCampus){
     	$scope.campusesArray = selectedCampus;
+    	if($scope.enableDateChart){
+    		$scope.campusesArray = [];
+    	}
     	if(selectedCampus){
     		$scope.disableStdChart = true;
     	if(selectedCampus.length == 1){
@@ -242,8 +287,16 @@ app.controller('rolesController', function($scope, $filter,$rootScope) {
     		$scope.drillData = $scope.campusDrillData;
     	}if(selectedCampus.length == 2){
     		$scope.chartArry = $scope.campusOneData2;
+    		$scope.drillData = $scope.campusDrillData;
     	}if(selectedCampus.length == 3){
-    		$scope.chartArry = $scope.campusOneData3;
+    		if($scope.enableDateChart){
+    			$scope.chartArry = $scope.tempDateArray;
+        		$scope.drillData = $scope.campusDrillData;
+    		}else{
+    			$scope.chartArry = $scope.campusOneData3;
+        		$scope.drillData = $scope.campusDrillData;
+    		}
+    		
     	}
     	}
     	$scope.chartDaigram();
@@ -337,7 +390,37 @@ app.controller('rolesController', function($scope, $filter,$rootScope) {
     //to set active class on current tab
     $scope.setActiveType = function(type, dateObj) {
         $scope.displayValue = $scope.getValue(type, dateObj);
-        $scope.getStudentDetails($scope.campusesArray);
+        if($scope.campusesArray.length > 0){
+        	$scope.getStudentDetails($scope.campusesArray);
+        	$scope.enableDateChart = false;
+        }else{
+        	$scope.tempCampusesArray = ["campu1","campu2","campu3"];
+        	//$scope.campusesArray = $scope.tempCampusesArray;
+        	$scope.enableDateChart = true;
+        	$scope.tempDateArray = [];
+        	if(type == 'DAY'){
+        		$scope.tempDateArray = $scope.selectedDate;
+        		$scope.getStudentDetails($scope.tempCampusesArray);
+        		$scope.tempCampusesArray = [];
+        	}
+        	if(type == 'MONTH'){
+        		$scope.tempDateArray = $scope.selectedMonth;
+        		$scope.getStudentDetails($scope.tempCampusesArray);
+        		$scope.tempCampusesArray = [];
+        	}
+        	if(type == 'WEEK'){
+        		$scope.tempDateArray = $scope.selectedWeek;
+        		$scope.getStudentDetails($scope.tempCampusesArray);
+        		$scope.tempCampusesArray = [];
+        	}if(type == 'YEAR'){
+        		$scope.tempDateArray = $scope.selectedYear;
+        		$scope.getStudentDetails($scope.tempCampusesArray);
+        		$scope.tempCampusesArray = [];
+        	}
+        	/*$scope.chartArry = $scope.selectedDate;
+    		$scope.drillData = $scope.campusDrillData;
+    		$scope.chartDaigram();*/
+        }
     };
      
     //to get the value based on the selected type(active tab)
