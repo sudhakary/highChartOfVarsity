@@ -1,4 +1,4 @@
-app.controller('rolesController', function($scope, $filter,$rootScope) {
+app.controller('rolesController', ['$rootScope', '$scope', function($rootScope,$scope) {
     $scope.headingTitle = "Roles List";
     $scope.campusNames = ["Campus1","Campus2","Campus3"];
     $scope.subjects = ["Maths","Physics","Chemistry"];
@@ -6,6 +6,7 @@ app.controller('rolesController', function($scope, $filter,$rootScope) {
     $scope.enableDateChart = false;
     $scope.tempDateArray = [];
     $scope.avgOfCampus1 = 70;
+    $scope.displayValue = '';
     $scope.avgOfCampus2 = 80;
     $scope.avgOfCampus3 = 90;
     $scope.campusesArray = [];
@@ -14,7 +15,7 @@ app.controller('rolesController', function($scope, $filter,$rootScope) {
 					    $scope.mathsDrillData = [ {
 						name : 'campus1',
 						id : 'Maths',
-						data : [ { name:'campus1', y:80, color:'#4682B4' }, { name:'campus2', y:85, color:'#CD5C5C'},
+						data : [ { name:'campus1', y:80, color:'#4682B4' }, { name:'campus2', y:90, color:'#CD5C5C'},
 							{ name:'campus3', y:70, color:'#20B2AA'}]
 					}
 
@@ -260,16 +261,19 @@ app.controller('rolesController', function($scope, $filter,$rootScope) {
     		$scope.drillId = 'Maths';
     		$scope.chartArry = $scope.avgOfMaths;
     		$scope.drillData = $scope.mathsDrillData;
+    		$scope.avgMarksOfCampuses = "Average of Maths";
     	}
     	if(selectedSubject == "Physics"){
     		$scope.drillId = 'Physics';
     		$scope.chartArry = $scope.avgOfPhysics;
     		$scope.drillData = $scope.physicsDrillData;
+    		$scope.avgMarksOfCampuses = "Average of Physics";
     	}
     	if(selectedSubject == "Chemistry"){
     		$scope.drillId = 'Chemistry';
     		$scope.chartArry = $scope.avgOfChemistry;
     		$scope.drillData = $scope.chemistryDrillData;
+    		$scope.avgMarksOfCampuses = "Average of Chemistry";
     	}
     	$scope.chartDaigram();
     	
@@ -285,6 +289,7 @@ app.controller('rolesController', function($scope, $filter,$rootScope) {
     	if(selectedCampus.length == 1){
     		$scope.chartArry = $scope.campusOneData1;
     		$scope.drillData = $scope.campusDrillData;
+    		$scope.avgMarksOfCampuses = "Average Marks of Campuses level.";
     	}if(selectedCampus.length == 2){
     		$scope.chartArry = $scope.campusOneData2;
     		$scope.drillData = $scope.campusDrillData;
@@ -305,7 +310,34 @@ app.controller('rolesController', function($scope, $filter,$rootScope) {
     $scope.chartDaigram = function(){
     	// Create the chart
         Highcharts.chart('container', {
-            chart: {
+        	plotOptions: {
+                series: {
+                	events:{
+                        click: function (event) {
+                        	if(event.point.name == 'campus1' || event.point.name == 'campus2' || event.point.name == 'campus3'){
+                        		$('#container').highcharts().yAxis[0].setTitle({ text: "Average Marks of Subject level" });
+                        	}
+                        	if(event.point.name == 'Maths'){
+                        		$('#container').highcharts().yAxis[0].setTitle({ text: "Average  of Maths in  Campuses level" });
+                        	}
+                        	if(event.point.name == 'Physics'){
+                        		$('#container').highcharts().yAxis[0].setTitle({ text: "Average  of Physics in  Campuses level" });
+                        	}
+                        	if(event.point.name == 'Chemistry'){
+                        		$('#container').highcharts().yAxis[0].setTitle({ text: "Average  of Chemistry in  Campuses level" });
+                        	}
+                             
+                        }
+                  },
+                    borderWidth: 0,
+                    dataLabels: {
+                        enabled: true,
+                        format: '{point.y:.1f}%'
+                    }
+                }
+            },
+        	
+        	chart: {
                 type: 'column'
             },
             title: {
@@ -319,22 +351,14 @@ app.controller('rolesController', function($scope, $filter,$rootScope) {
             },
             yAxis: {
                 title: {
-                    text: 'Total percent market share'
+                    text: $scope.avgMarksOfCampuses
                 }
 
             },
             legend: {
                 enabled: false
             },
-            plotOptions: {
-                series: {
-                    borderWidth: 0,
-                    dataLabels: {
-                        enabled: true,
-                        format: '{point.y:.1f}%'
-                    }
-                }
-            },
+            
 
             tooltip: {
                 headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
@@ -400,20 +424,24 @@ app.controller('rolesController', function($scope, $filter,$rootScope) {
         	$scope.tempDateArray = [];
         	if(type == 'DAY'){
         		$scope.tempDateArray = $scope.selectedDate;
+        		$scope.avgMarksOfCampuses = "Day wise Campuses Averages";
         		$scope.getStudentDetails($scope.tempCampusesArray);
         		$scope.tempCampusesArray = [];
         	}
         	if(type == 'MONTH'){
         		$scope.tempDateArray = $scope.selectedMonth;
+        		$scope.avgMarksOfCampuses = "Month wise Campuses Averages";
         		$scope.getStudentDetails($scope.tempCampusesArray);
         		$scope.tempCampusesArray = [];
         	}
         	if(type == 'WEEK'){
         		$scope.tempDateArray = $scope.selectedWeek;
+        		$scope.avgMarksOfCampuses = "Week wise Campuses Averages";
         		$scope.getStudentDetails($scope.tempCampusesArray);
         		$scope.tempCampusesArray = [];
         	}if(type == 'YEAR'){
         		$scope.tempDateArray = $scope.selectedYear;
+        		$scope.avgMarksOfCampuses = "Year wise Campuses Averages";
         		$scope.getStudentDetails($scope.tempCampusesArray);
         		$scope.tempCampusesArray = [];
         	}
@@ -466,4 +494,4 @@ app.controller('rolesController', function($scope, $filter,$rootScope) {
     
    
        
-});
+}]);
