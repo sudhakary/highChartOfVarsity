@@ -1,13 +1,15 @@
-app.controller('rolesController', ['$rootScope', '$scope', function($rootScope,$scope) {
+app.controller('rolesController', ['$rootScope', '$scope','$filter','MenuService', function($rootScope,$scope,$filter,MenuService) {
     $scope.headingTitle = "Roles List";
     $scope.campusNames = ["Campus1","Campus2","Campus3"];
     $scope.subjects = ["Maths","Physics","Chemistry"];
     $scope.disableStdChart = false;
     $scope.enableDateChart = false;
+    $scope.enableYearLineData = false;
     $scope.tempDateArray = [];
     $scope.avgOfCampus1 = 70;
     $scope.displayValue = '';
     $scope.avgOfCampus2 = 80;
+    $scope.chartType = 'column';
     $scope.avgOfCampus3 = 90;
     $scope.campusesArray = [];
     $scope.chartArry = [];
@@ -256,6 +258,7 @@ app.controller('rolesController', ['$rootScope', '$scope', function($rootScope,$
     
     
     $scope.getSubjectDetails = function(selectedSubject){
+    	$scope.chartType = 'column';
     	$scope.disableStdChart = true;
     	if(selectedSubject == "Maths"){
     		$scope.drillId = 'Maths';
@@ -287,20 +290,38 @@ app.controller('rolesController', ['$rootScope', '$scope', function($rootScope,$
     	if(selectedCampus){
     		$scope.disableStdChart = true;
     	if(selectedCampus.length == 1){
-    		$scope.chartArry = $scope.campusOneData1;
-    		$scope.drillData = $scope.campusDrillData;
-    		$scope.avgMarksOfCampuses = "Average Marks of Campuses level.";
-    	}if(selectedCampus.length == 2){
-    		$scope.chartArry = $scope.campusOneData2;
-    		$scope.drillData = $scope.campusDrillData;
-    	}if(selectedCampus.length == 3){
-    		if($scope.enableDateChart){
-    			$scope.chartArry = $scope.tempDateArray;
-        		$scope.drillData = $scope.campusDrillData;
+    		if($scope.enableYearLineData){
+    			$scope.chartArry = $scope.StudentAvgMarks1;
+        		$scope.drillData = $scope.YearDrillData;
     		}else{
-    			$scope.chartArry = $scope.campusOneData3;
+    			$scope.chartArry = $scope.campusOneData1;
+        		$scope.drillData = $scope.campusDrillData;
+        		$scope.avgMarksOfCampuses = "Average Marks of Campuses level.";
+    		}
+    		
+    	}if(selectedCampus.length == 2){
+    		if($scope.enableYearLineData){
+    			$scope.chartArry = $scope.StudentAvgMarks2;
+        		$scope.drillData = $scope.YearDrillData;
+    		}else{
+    			$scope.chartArry = $scope.campusOneData2;
         		$scope.drillData = $scope.campusDrillData;
     		}
+    		
+    	}if(selectedCampus.length == 3){
+    		if($scope.enableYearLineData){
+    			$scope.chartArry = $scope.StudentAvgMarks3;
+        		$scope.drillData = $scope.YearDrillData;
+    		}else{
+    			if($scope.enableDateChart){
+        			$scope.chartArry = $scope.tempDateArray;
+            		$scope.drillData = $scope.campusDrillData;
+        		}else{
+        			$scope.chartArry = $scope.campusOneData3;
+            		$scope.drillData = $scope.campusDrillData;
+        		}
+    		}
+    		
     		
     	}
     	}
@@ -338,7 +359,7 @@ app.controller('rolesController', ['$rootScope', '$scope', function($rootScope,$
             },
         	
         	chart: {
-                type: 'column'
+                type: $scope.chartType
             },
             title: {
                 text: 'Average Student marks in Campuses. '+$scope.displayValue
@@ -415,35 +436,66 @@ app.controller('rolesController', ['$rootScope', '$scope', function($rootScope,$
     $scope.setActiveType = function(type, dateObj) {
         $scope.displayValue = $scope.getValue(type, dateObj);
         if($scope.campusesArray.length > 0){
-        	$scope.getStudentDetails($scope.campusesArray);
-        	$scope.enableDateChart = false;
+        	if(type == 'YEAR'){
+        		$scope.chartType = 'line';
+        		if($scope.campusesArray.length == 1){
+        		$scope.tempDateArray = $scope.StudentAvgMarks1;
+        		$scope.enableYearLineData = true;
+        		$scope.getStudentDetails($scope.campusesArray);
+        		}if($scope.campusesArray.length == 2){
+        			$scope.tempDateArray = $scope.StudentAvgMarks2;
+            		$scope.enableYearLineData = true;
+            		$scope.getStudentDetails($scope.campusesArray);
+        		}if($scope.campusesArray.length == 3){
+	                $scope.tempDateArray = $scope.StudentAvgMarks3;
+	                $scope.enableYearLineData = true;
+	              $scope.getStudentDetails($scope.campusesArray);
+        		}
+        	}else{
+        		$scope.enableDateChart = false;
+        		$scope.enableYearLineData = false;
+        		$scope.chartType = 'column';
+        		$scope.getStudentDetails($scope.campusesArray);
+        	}
+        	
         }else{
         	$scope.tempCampusesArray = ["campu1","campu2","campu3"];
         	//$scope.campusesArray = $scope.tempCampusesArray;
         	$scope.enableDateChart = true;
         	$scope.tempDateArray = [];
         	if(type == 'DAY'){
+        		$scope.enableYearLineData = false;
+        		$scope.chartType = 'column';
         		$scope.tempDateArray = $scope.selectedDate;
         		$scope.avgMarksOfCampuses = "Day wise Campuses Averages";
         		$scope.getStudentDetails($scope.tempCampusesArray);
         		$scope.tempCampusesArray = [];
         	}
         	if(type == 'MONTH'){
+        		$scope.enableYearLineData = false;
+        		$scope.chartType = 'column';
         		$scope.tempDateArray = $scope.selectedMonth;
         		$scope.avgMarksOfCampuses = "Month wise Campuses Averages";
         		$scope.getStudentDetails($scope.tempCampusesArray);
         		$scope.tempCampusesArray = [];
         	}
         	if(type == 'WEEK'){
+        		$scope.enableYearLineData = false;
+        		$scope.chartType = 'column';
         		$scope.tempDateArray = $scope.selectedWeek;
         		$scope.avgMarksOfCampuses = "Week wise Campuses Averages";
         		$scope.getStudentDetails($scope.tempCampusesArray);
         		$scope.tempCampusesArray = [];
         	}if(type == 'YEAR'){
-        		$scope.tempDateArray = $scope.selectedYear;
+        		$scope.tempDateArray = $scope.StudentAvgMarks3;
+        		$scope.chartType = 'line';
+        		$scope.enableYearLineData = true;
+        		$scope.campusDrillData =  $scope.YearDrillData;
         		$scope.avgMarksOfCampuses = "Year wise Campuses Averages";
         		$scope.getStudentDetails($scope.tempCampusesArray);
         		$scope.tempCampusesArray = [];
+        		
+
         	}
         	/*$scope.chartArry = $scope.selectedDate;
     		$scope.drillData = $scope.campusDrillData;
@@ -491,7 +543,342 @@ app.controller('rolesController', ['$rootScope', '$scope', function($rootScope,$
     $scope.init = function() {
         $scope.setActiveType('MONTH', $scope.dateObj);
     }
+    $rootScope.campusTwoData = {
+		  	 name:"Campus2",
+		  	 data: [{
+		         name: 'Jan',
+		         y: 45,
+		         drilldown: 'Jan'
+		                
+		             }, 
+		             {
+		                  name: 'Feb',
+		         y: 67,
+		         drilldown: 'Feb'
+		                 
+		             },
+		             {
+		                 name: 'March',
+		                 y: 79,
+		                 drilldown: 'March'
+		                         
+		          },
+		          {
+		              name: 'April',
+		     y: 46,
+		     drilldown: 'April'
+		             
+		         },
+		         {
+		             name: 'May',
+		    y: 60,
+		    drilldown: 'May'
+		            
+		        },
+		        {
+		            name: 'June',
+		   y: 70,
+		   drilldown: 'June'
+		           
+		       },
+		       {
+		           name: 'july',
+		  y: 56,
+		  drilldown: 'July'
+		          
+		      },
+		      {
+		          name: 'Aug',
+		 y: 77,
+		 drilldown: 'Aug'
+		         
+		     },
+		     {
+		         name: 'Sep',
+		y: 84,
+		drilldown: 'Sep'
+		        
+		    },
+		    {
+		        name: 'Oct',
+		y: 40,
+		drilldown: 'Oct'
+		       
+		   },
+		   {
+		       name: 'Nov',
+		y: 34,
+		drilldown: 'Nov'
+		      
+		  },
+		  {
+		      name: 'Dec',
+		y: 40,
+		drilldown: 'Dec'
+		     
+		 }]
+		  }
+   
+   $scope.capusOnedata = {
+  	  	 name:"Campus1",
+	  	 data: [{
+	         name: 'Jan',
+	         y: 24,
+	         drilldown: 'Jan'
+	                
+	             }, {
+	                  name: 'Feb',
+	         y: 56,
+	         drilldown: 'Feb'
+	                 
+	             }, {
+	                 name: 'March',
+	                 y: 45,
+	                 drilldown: 'March'
+	                         
+	          },
+	          {
+	              name: 'April',
+	     y: 46,
+	     drilldown: 'April'
+	             
+	         },
+	         {
+	             name: 'May',
+	    y: 36,
+	    drilldown: 'May'
+	            
+	        },
+	        {
+	            name: 'June',
+	   y: 32,
+	   drilldown: 'June'
+	           
+	       },
+	       {
+	           name: 'july',
+	  y: 47,
+	  drilldown: 'July'
+	          
+	      },
+	      {
+	          name: 'Aug',
+	 y: 50,
+	 drilldown: 'Aug'
+	         
+	     },
+	     {
+	         name: 'Sep',
+	y: 45,
+	drilldown: 'Sep'
+	        
+	    },
+	    {
+	        name: 'Oct',
+	y: 40,
+	drilldown: 'Oct'
+	       
+	   },
+	   {
+	       name: 'Nov',
+	y: 46,
+	drilldown: 'Nov'
+	      
+	  },
+	  {
+	      name: 'Dec',
+	y: 40,
+	drilldown: 'Dec'
+	     
+	 }]
+	  }
+   
+   $scope.capusThreeData = {
+  	  	 name:"Campus3",
+	  	 data: [{
+	         name: 'Jan',
+	         y: 50,
+	         drilldown: 'Jan'
+	                
+	             }, {
+	                  name: 'Feb',
+	         y: 47,
+	         drilldown: 'Feb'
+	                 
+	             }, {
+	                 name: 'March',
+	                 y: 45,
+	                 drilldown: 'March'
+	                         
+	          },
+	          {
+	              name: 'April',
+	     y: 37,
+	     drilldown: 'April'
+	             
+	         },
+	         {
+	             name: 'May',
+	    y: 56,
+	    drilldown: 'May'
+	            
+	        },
+	        {
+	            name: 'June',
+	   y: 60,
+	   drilldown: 'June'
+	           
+	       },
+	       {
+	           name: 'july',
+	  y: 65,
+	  drilldown: 'July'
+	          
+	      },
+	      {
+	          name: 'Aug',
+	 y: 52,
+	 drilldown: 'Aug'
+	         
+	     },
+	     {
+	         name: 'Sep',
+	y: 44,
+	drilldown: 'Sep'
+	        
+	    },
+	    {
+	        name: 'Oct',
+	y: 40,
+	drilldown: 'Oct'
+	       
+	   },
+	   {
+	       name: 'Nov',
+	y: 46,
+	drilldown: 'Nov'
+	      
+	  },
+	  {
+	      name: 'Dec',
+	y: 56,
+	drilldown: 'Dec'
+	     
+	 }]
+	  }
     
+    $scope.YearDrillData = [{
+                id: 'Jan',
+                name: 'Campus1',
+                data: [
+                    ['Maths', 20],
+                    ['Physics', 30],
+                    ['Chemistry', 50],
+                ]
+            }, {
+                id: 'Feb',
+                name: 'Campus1',
+                data: [
+                    ['Maths', 22],
+                    ['Physics', 34],
+                    ['Chemistry', 40],
+                ]
+            },{
+                id: 'March',
+                name: 'Campus1',
+                data: [
+                    ['Maths', 34],
+                    ['Physics', 45],
+                    ['Chemistry', 40],
+                ]
+            },{
+                id: 'April',
+                name: 'Campus1',
+                data: [
+                    ['Maths', 23],
+                    ['Physics', 34],
+                    ['Chemistry', 54],
+                ]
+            },
+            {
+                id: 'May',
+                name: 'Campus1',
+                data: [
+                    ['Maths', 33],
+                    ['Physics', 24],
+                    ['Chemistry', 42],
+                ]
+            },
+            {
+                id: 'June',
+                name: 'Campus1',
+                data: [
+                    ['Maths', 35],
+                    ['Physics', 56],
+                    ['Chemistry', 45],
+                ]
+            },
+            {
+                id: 'July',
+                name: 'Campus1',
+                data: [
+                    ['Maths', 20],
+                    ['Physics', 30],
+                    ['Chemistry', 50],
+                ]
+            },
+            {
+                id: 'Aug',
+                name: 'Campus1',
+                data: [
+                    ['Maths', 46],
+                    ['Physics', 64],
+                    ['Chemistry', 55],
+                ]
+            },
+            {
+                id: 'Sep',
+                name: 'Campus1',
+                data: [
+                    ['Maths', 44],
+                    ['Physics', 55],
+                    ['Chemistry', 66],
+                ]
+            },
+            {
+                id: 'Oct',
+                name: 'Campus1',
+                data: [
+                    ['Maths', 50],
+                    ['Physics', 80],
+                    ['Chemistry', 60],
+                ]
+            },
+            {
+                id: 'Nov',
+                name: 'Campus1',
+                data: [
+                    ['Maths', 67],
+                    ['Physics', 70],
+                    ['Chemistry', 45],
+                ]
+            },
+            {
+                id: 'Dec',
+                name: 'Campus1',
+                data: [
+                    ['Maths', 50],
+                    ['Physics', 62],
+                    ['Chemistry', 55],
+                ]
+            }
+        
+       ]
+   	
+   
+   $scope.StudentAvgMarks3 = [$scope.capusOnedata,$rootScope.campusTwoData,$scope.capusThreeData]
+   $scope.StudentAvgMarks2 = [$scope.capusOnedata,$rootScope.campusTwoData]
+    $scope.StudentAvgMarks1 = [$scope.capusOnedata]
    
        
 }]);

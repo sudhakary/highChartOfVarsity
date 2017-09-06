@@ -1,4 +1,4 @@
-app.controller('usersController', function($scope,$filter) {
+app.controller('usersController', function($scope,$filter,$rootScope) {
     $scope.headingTitle = "User List";
     $scope.seriesData = [95, 71, 60];
     $scope.studentname = "Sudhakar yeturi";
@@ -8,7 +8,7 @@ app.controller('usersController', function($scope,$filter) {
         "July", "August", "September", "October", "November", "December"
     ];
     
-    $scope.campusTwoData = {
+    $rootScope.campusTwoData = {
 		  	 name:"Campus2",
 		  	 data: [{
 		         name: 'Jan',
@@ -233,9 +233,9 @@ app.controller('usersController', function($scope,$filter) {
 	  }
     	
     
-    $scope.StudentAvgMarks3 = [$scope.capusOnedata,$scope.campusTwoData,$scope.capusThreeData]
+    $scope.StudentAvgMarks3 = [$scope.capusOnedata,$rootScope.campusTwoData,$scope.capusThreeData]
    	
-    $scope.StudentAvgMarks2 = [$scope.capusOnedata,$scope.campusTwoData]
+    $scope.StudentAvgMarks2 = [$scope.capusOnedata,$rootScope.campusTwoData]
     
     $scope.StudentAvgMarks1 = [$scope.capusOnedata]
     
