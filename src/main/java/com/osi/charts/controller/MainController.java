@@ -2,11 +2,10 @@ package com.osi.charts.controller;
 
 import java.util.List;
 
-import javax.annotation.PostConstruct;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -27,11 +26,12 @@ public class MainController {
    @PostMapping
 	public ResponseEntity<String> createStudentDetails(@RequestBody Student student){
 		iStudentService.createStudent(student);
-		return new ResponseEntity<String>("Student details saved successfully",HttpStatus.CREATED);
+		return new ResponseEntity<>("Student details saved successfully",HttpStatus.CREATED);
 	}
 
-	public ResponseEntity<String> getStudentByCampus(@PathVariable List<String> campus){
+   @GetMapping
+   public ResponseEntity<String> getStudentByCampus(@PathVariable List<String> campus){
 		iStudentService.geStudentByCampus(campus);
-		return new ResponseEntity<String>("Student details saved successfully",HttpStatus.CREATED);
+		return new ResponseEntity<>("Student details saved successfully",HttpStatus.OK);
 	}
 }
