@@ -29,9 +29,8 @@ public class MainController {
 		return new ResponseEntity<>("Student details saved successfully",HttpStatus.CREATED);
 	}
 
-   @GetMapping
-   public ResponseEntity<String> getStudentByCampus(@PathVariable List<String> campus){
-		iStudentService.geStudentByCampus(campus);
-		return new ResponseEntity<>("Student details saved successfully",HttpStatus.OK);
+   @GetMapping("/campus/{campus}")
+   public ResponseEntity<List<Student>> getStudentByCampus(@PathVariable List<String> campus){
+		return new ResponseEntity<>(iStudentService.geStudentByCampus(campus),HttpStatus.OK);
 	}
 }

@@ -283,6 +283,12 @@ app.controller('rolesController', ['$rootScope', '$scope','$filter','MenuService
     }
     
     $scope.getStudentDetails = function(selectedCampus){
+    	
+    	MenuService.getStudentsData(selectedCampus).success(function(res){
+    		console.log("Campus data is "+JSON.stringify(res));
+    	})
+    	
+    	
     	$scope.campusesArray = selectedCampus;
     	if($scope.enableDateChart){
     		$scope.campusesArray = [];

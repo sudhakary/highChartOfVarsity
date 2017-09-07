@@ -1,20 +1,17 @@
-/*app
- .service( 'MenuService', [ '$rootScope','$scope', function( $rootScope,$scope ) {
-   return {
-      menu: [ 'Item 1' ],
-      add: function() {
-        this.menu.push( item );
-      }
-   };
- }])*/
- 
  app.service('MenuService',['$http','$rootScope',MenuService]);
 
 function MenuService($http,$rootScope) {
 	return {
-		getYearData : getYearData
+		getYearData : getYearData,
+		getStudentsData: getStudentsData
 	};
 	function getYearData(){
 		return "sudha";
+	}
+	
+	function getStudentsData(campus){
+		$http.get("student/campus/"+campus).success(function(res){
+			return res;
+		})
 	}
 }
