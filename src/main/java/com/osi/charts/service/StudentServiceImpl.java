@@ -4,8 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
+import com.osi.charts.domain.Campus;
 import com.osi.charts.domain.Student;
 import com.osi.charts.repository.StudentRepository;
 
@@ -14,18 +18,23 @@ public class StudentServiceImpl implements IStudentService
 {
 	@Autowired
 	StudentRepository studentRepository;
+	
+	@Autowired
+	private MongoTemplate mongoTemplate;
 
 	public Student createStudent(Student student) {
-		return studentRepository.save(student);
+		return null;
 	}
 
-	public List<Student> geStudentByCampus(List<String> campus) {
-		List<Student> listOfStudents = new ArrayList<Student>();
+	public List<Campus> getCampusDetails(List<String> campus) {
+		List<Campus> listOfCampus = new ArrayList<Campus>();
 		for(String stdCampus : campus){
-			Student student = studentRepository.findByCampus(stdCampus);
-			listOfStudents.add(student);
+			Query query = new Query();
+			query.addCriteria(Criteria.where("name").is(stdCampus));
+			Campus campusData = mongoTemplate.findOne(query, Campus.class);
+			listOfCampus.add(campusData);
 		}
-		return listOfStudents;
+		return listOfCampus;
 	}
 
 }

@@ -14,18 +14,11 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Document(collection = "Student")
 @Component
 public class Student {
 
-@Id
- String id;
  String name;
- @NotEmpty
  Integer rollNumber;
- List<Integer> marks;
- @NotEmpty
- Campus campus;
  List<Subject> subjects;
  
 }

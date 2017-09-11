@@ -10,8 +10,12 @@ function MenuService($http,$rootScope) {
 	}
 	
 	function getStudentsData(campus){
-		$http.get("student/campus/"+campus).success(function(res){
+		return $http.get("student/campus/"+campus).success(function(res){
 			return res;
 		})
 	}
+	/*function getEmployeeDetail(empEmailId){
+		//return $http.post('getEmployeeDetail').success(getEmployeeDetailSuccess);
+		return $http.get('userDetails/logedInUser').success(getEmployeeDetailSuccess);
+	}*/
 }

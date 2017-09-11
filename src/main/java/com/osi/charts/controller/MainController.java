@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.osi.charts.domain.Campus;
 import com.osi.charts.domain.Student;
 import com.osi.charts.service.IStudentService;
 
@@ -24,13 +25,14 @@ public class MainController {
 	IStudentService iStudentService;
 	
    @PostMapping
-	public ResponseEntity<String> createStudentDetails(@RequestBody Student student){
+	public ResponseEntity<?> createStudentDetails(@RequestBody Student student){
 		iStudentService.createStudent(student);
 		return new ResponseEntity<>("Student details saved successfully",HttpStatus.CREATED);
 	}
 
    @GetMapping("/campus/{campus}")
-   public ResponseEntity<List<Student>> getStudentByCampus(@PathVariable List<String> campus){
-		return new ResponseEntity<>(iStudentService.geStudentByCampus(campus),HttpStatus.OK);
-	}
+   public ResponseEntity<List<Campus>> getStudentByCampus(@PathVariable List<String> campus){
+	   List<Campus> campusdata = iStudentService.getCampusDetails(campus);
+		return new ResponseEntity<List<Campus>>(campusdata, HttpStatus.OK);
+}
 }

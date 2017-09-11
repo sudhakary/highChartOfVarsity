@@ -1,4 +1,4 @@
-app.controller('rolesController', ['$rootScope', '$scope','$filter','MenuService', function($rootScope,$scope,$filter,MenuService) {
+app.controller('rolesController', ['$rootScope', '$scope','$filter','MenuService','$route', function($rootScope,$scope,$filter,MenuService,$route) {
     $scope.headingTitle = "Roles List";
     $scope.campusNames = ["Campus1","Campus2","Campus3"];
     $scope.subjects = ["Maths","Physics","Chemistry"];
@@ -6,11 +6,16 @@ app.controller('rolesController', ['$rootScope', '$scope','$filter','MenuService
     $scope.enableDateChart = false;
     $scope.enableYearLineData = false;
     $scope.tempDateArray = [];
-    $scope.avgOfCampus1 = 70;
+    $scope.avgOfCampus1 = 78.33;
     $scope.displayValue = '';
-    $scope.avgOfCampus2 = 80;
+    $scope.avgOfCampus2 = 74;
+    $scope.campusObjData = {
+    		name:'',
+    		y: '',
+    		drilldown: ''
+    }
     $scope.chartType = 'column';
-    $scope.avgOfCampus3 = 90;
+    $scope.avgOfCampus3 = 70;
     $scope.campusesArray = [];
     $scope.chartArry = [];
     $scope.drillData = [];
@@ -27,7 +32,7 @@ app.controller('rolesController', ['$rootScope', '$scope','$filter','MenuService
 					    $scope.physicsDrillData = [ {
 						name : 'campus1',
 						id : 'Physics',
-						data : [ { name:'campus1', y:72, color:'#00008B' }, { name:'campus2', y:85, color:'#CD5C5C'},
+						data : [ { name:'campus1', y:84, color:'#00008B' }, { name:'campus2', y:93, color:'#CD5C5C'},
 							{ name:'campus3', y:70, color:'#20B2AA'}]
 					}
 
@@ -64,6 +69,26 @@ app.controller('rolesController', ['$rootScope', '$scope','$filter','MenuService
 								data : [ { name:'Maths', y:80, color:'#8FBC8F' }, { name:'Physics', y:70, color:'#BDB76B'},
 									{ name:'Chemistry', y:60, color:'#556B2F'}]
 							} ];
+					    
+					    $scope.dateDrillData = [
+							{
+								name : 'campus1',
+								id : 'dateCampus1',
+								data : [ { name:'Maths', y:77, color:'#4682B4' }, { name:'Physics', y:92, color:'#CD5C5C'},
+									{ name:'Chemistry', y:89, color:'#20B2AA'}]
+							},
+							{
+								name : 'campus2',
+								id : 'dateCampus2',
+								data : [ { name:'Maths', y:76, color:'#00008B' }, { name:'Physics', y:85, color:'#008B8B'},
+									{ name:'Chemistry', y:70, color:'#B8860B'}]
+							},
+							{
+								name : 'campus3',
+								id : 'dateCampus3',
+								data : [ { name:'Maths', y:80, color:'#8FBC8F' }, { name:'Physics', y:77, color:'#BDB76B'},
+									{ name:'Chemistry', y:85, color:'#556B2F'}]
+							} ];
     
 
 					    $scope.avgOfMaths = [ {
@@ -72,7 +97,7 @@ app.controller('rolesController', ['$rootScope', '$scope','$filter','MenuService
 						data : [ {
 							name : 'Maths',
 							color: '#D2691E',
-							y : 92,
+							y : 80,
 							drilldown : 'Maths'
 						}
 
@@ -86,7 +111,7 @@ app.controller('rolesController', ['$rootScope', '$scope','$filter','MenuService
 						data : [ {
 							name : 'Physics',
 							color: '#008B8B',
-							y : 78,
+							y : 82.33,
 							drilldown : 'Physics'
 						}
 
@@ -100,7 +125,7 @@ app.controller('rolesController', ['$rootScope', '$scope','$filter','MenuService
 						data : [ {
 							name : 'Chemistry',
 							color: '#B8860B',
-							y : 86,
+							y : 84.33,
 							drilldown : 'Chemistry'
 						}
 
@@ -122,14 +147,12 @@ app.controller('rolesController', ['$rootScope', '$scope','$filter','MenuService
     
 
 					    $scope.campusOneData2 = [ {
-						name : 'campus2',
-						colorByPoint : true,
 						data : [ {
-							name : 'campus1',
+							name : 'campus4',
 							y : $scope.avgOfCampus1,
 							drilldown : 'campus1'
 						}, {
-							name : 'campus2',
+							name : 'campus5',
 							color: '#008B8B',
 							y : $scope.avgOfCampus2,
 							drilldown : 'campus2'
@@ -165,19 +188,19 @@ app.controller('rolesController', ['$rootScope', '$scope','$filter','MenuService
        data: [{
            name: 'campus1',
            color: '#BDB76B',
-           y: 67,
+           y: 86,
            drilldown: 'campus1'
        },
        {
            name: 'campus2',
            color: '#008B8B',
-           y: 86,
+           y: 77,
            drilldown: 'campus2'
        },
        {
            name: 'campus3',
            color: '#FF7F50',
-           y: 77,
+           y: 80.66,
            drilldown: 'campus3'
        }
        ]
@@ -283,11 +306,15 @@ app.controller('rolesController', ['$rootScope', '$scope','$filter','MenuService
     }
     
     $scope.getStudentDetails = function(selectedCampus){
-    	
     	MenuService.getStudentsData(selectedCampus).success(function(res){
     		console.log("Campus data is "+JSON.stringify(res));
-    	})
+    	});
     	
+    	
+    	/*employeeService.getEmployeeDetail($scope.empEmailId).success(function(res){
+		$scope.osiEmployeeDetail=res;
+		$rootScope.empRole = res.empRole;
+	});*/
     	
     	$scope.campusesArray = selectedCampus;
     	if($scope.enableDateChart){
@@ -549,6 +576,10 @@ app.controller('rolesController', ['$rootScope', '$scope','$filter','MenuService
     $scope.init = function() {
         $scope.setActiveType('MONTH', $scope.dateObj);
     }
+    $scope.pageReload = function(){
+    	$route.reload();
+    }
+    
     $rootScope.campusTwoData = {
 		  	 name:"Campus2",
 		  	 data: [{

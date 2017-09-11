@@ -6,7 +6,7 @@
 			ng-options="item for item in campusNames"
 			ng-change="getStudentDetails(selectedCampus)"></select>
 	</div>
-	<div class="col-sm-4" style="padding-left: 134px;">
+	<div class="col-sm-3" style="padding-left: 134px;">
 		<label class="active">Select Subject:</label> <select name="month"
 			style="width: 172px;" class="form-control" id="select"
 			ng-model=" selectedSubject" ng-options="item for item in subjects"
@@ -35,6 +35,7 @@
 					ng-click="setActiveType('YEAR', dateObj)">Year</button>
 			</div>
 		</div>
+		<br>
 		<div class="col">
 			<div class="btn-group">
 				<button type="button" class="btn btn-default"
@@ -43,6 +44,9 @@
 					ng-click="changeValue(active, dateObj,'next');">Next</button>
 			</div>
 		</div>
+	</div>
+	<div class="col-sm-1" >
+	 <button type="button" class="btn btn-primary" ng-click="pageReload()">Reload</button>
 	</div>
 </div>
 <div id="container"
